@@ -1,2 +1,2 @@
-require './watme'
-run Watme
+require './roflme'
+run Roflme

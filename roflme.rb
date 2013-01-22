@@ -3,9 +3,9 @@ require "bundler/setup"
 Bundler.require(:default)
 require "active_support/cache"
 
-class Watme < Sinatra::Base
-  def wats
-    connection = Faraday.new(:url => 'http://knowyourmeme.com/memes/wat/photos?sort=score') do |conn|
+class Roflme < Sinatra::Base
+  def rofls
+    connection = Faraday.new(:url => 'http://knowyourmeme.com/search?utf8=%E2%9C%93&sort=score&q=rofl') do |conn|
       conn.response :caching do
         ActiveSupport::Cache::FileStore.new 'tmp/cache', :namespace => 'faraday', :expires_in => 3600
       end
@@ -13,7 +13,7 @@ class Watme < Sinatra::Base
     end
     response = connection.get
     doc = Nokogiri::HTML(response.body)
-    doc.css("a.photo:not(.left) img").map{|img| {"wat" => img["src"].gsub("masonry", "newsfeed")}}
+    doc.css("a.photo:not(.left) img").map{|img| {"rofl" => img["src"].gsub("medium", "large")}}
   end
 
   before do
@@ -21,10 +21,10 @@ class Watme < Sinatra::Base
   end
 
   get '/' do
-    wats.to_json
+    rofls.to_json
   end
 
   get '/random' do
-    wats.sample.to_json
+    rofls.sample.to_json
   end
 end
