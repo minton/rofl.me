@@ -70,12 +70,12 @@ class Roflme < Sinatra::Base
   get '/' do
     rofls.to_json
   end
-  get '/poop' do
-    others.to_json
-  end
   get '/random' do
-
-    rofls.sample.to_json
+    if rand(60) % 2 == 0
+      others.to_json
+    else
+      rofls.sample.to_json
+    end
   end
 
 end
